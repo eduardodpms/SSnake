@@ -59,15 +59,16 @@ void game(int *config, int *best_score){
         if(run == 0) clean_field(field, snake_i, snake_j, config, size); // Inicializa/Limpa o campo
         if((config[0]+1)*(score-config[3]) > *best_score) *best_score = (config[0]+1)*(score-config[3]); // Atualiza o melhor score
 
-        system("cls");
+        if(!config[7]) system("cls");
+        else printf("\n\n\n\n\n"); // Printa espaçamento (modo de Debug)
         printf("|   SSnake  by  eduardodpms   |   Score = %03d - Best = %03d  |\n", (config[0]+1)*(score-config[3]), *best_score); // Header
 
-        separator(61);
+        separator(61, config[7]);
         for(int i=0; i<size; i++, printf("|\n")){
             for(int j=0; j<(29-size); j++) printf(" ");
             for(int j=!printf("| "); j<size; j++) printf("%c ", field[i][j]);
         }
-        separator(61);
+        separator(61, 0);
 
         if(run == 0) printf("- Digite 'I' para iniciar o jogo;\n");
         else{

@@ -1,19 +1,19 @@
 #ifndef HEADER_H
 #define HEADER_H
 
-void separator(int length);
+void separator(int length, int debug);
 
 void space(int length, int line, char msg[100]);
 
 char scan(int *error);
 
-char main_menu(int *error);
+char main_menu(int *error, int debug);
 
 void options_menu(int *error, int *config);
 
-void info_menu(int *error);
+void info_menu(int *error, int debug);
 
-int exit_menu();
+int exit_menu(int debug);
 
 char *print_log(int n);
 
