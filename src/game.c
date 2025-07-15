@@ -32,7 +32,7 @@ void clean_field(char **field, int *snake_i, int *snake_j, int *config, int size
     
     snake_i[0] = size/2 +config[3]-1, snake_j[0] = size/2; // A posição 0 é uma cópia da cauda
     field[snake_i[config[3]]][snake_j[config[3]]] = config[4]; // Posiciona a cabeça no campo
-    field[size/4][size-(1+size/4)] = config[6]; // Posiciona a fruta no campo
+    field[size/4-1][size-(1-1+size/4)] = config[6]; // Posiciona a fruta no campo
 }
 
 // Run = -1 > O jogador venceu/morreu e o jogo está "pausado"
@@ -101,6 +101,7 @@ void game(int *config, int *best_score){
 
             if((snake_i[score]+x == snake_i[score-1]) && (snake_j[score]+y == snake_j[score-1])) // Impede que a cobra "volte"
                 x = -x, y = -y;
+            snake_i[score+1] = snake_i[score]+x, snake_j[score+1] = snake_j[score]+y; // Novo i e j que a cabeça irá, a princípio
             
             // Verificam se a cobra ultrapassará uma parede
             if(snake_i[score]+x < 0){ // Parede norte
@@ -118,10 +119,6 @@ void game(int *config, int *best_score){
             else if(snake_j[score]+y > (size-1)){ // Parede leste
                 if(config[1] == 0) snake_j[score+1] = 0;
                 else run = -1, status = 5; // Encerra o jogo
-            }
-            else{ // Se não cruzou uma parede
-                snake_i[score+1] = snake_i[score]+x;
-                snake_j[score+1] = snake_j[score]+y;
             }
 
             // Verificam se a cobra colidirá com algo no campo
