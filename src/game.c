@@ -41,7 +41,7 @@ void clean_field(char **field, int *snake_i, int *snake_j, int *config, int size
 // Run = 2 > O jogo está rodando
 // Run = 3 > O jogo será encerrado
 
-void game(int *config, int *best_score){
+void game(int *error, int *config, int *flag, int *best_score){
     int run = 0, status = 2, sleep_time, free_spaces, value;
     int score = config[3], size = config[2];
     int snake_i[size*size+2], snake_j[size*size+2], x, y;
@@ -57,29 +57,26 @@ void game(int *config, int *best_score){
 
     while(run != 3){
         if(run == 0) clean_field(field, snake_i, snake_j, config, size); // Inicializa/Limpa o campo
-        if((config[0]+1)*(score-config[3]) > *best_score) *best_score = (config[0]+1)*(score-config[3]); // Atualiza o melhor score
+        if(score > *best_score) *best_score = score; // Atualiza o melhor score
 
-        if(!config[7]) system("cls");
+        if(!config[7]) system("cls"); // Limpa o terminal (modo normal)
         else printf("\n\n\n\n\n"); // Printa espaçamento (modo de Debug)
-        printf("|   SSnake  by  eduardodpms   |   Score = %03d - Best = %03d  |\n", (config[0]+1)*(score-config[3]), *best_score); // Header
+        printf("|   SSnake  by  eduardodpms   |   Score = %03d - Best = %03d  |\n", // Header do menu do jogo
+               (config[0]+1)*(score-config[3]), (config[0]+1)*(*best_score-config[3])); // Valor dos scores atual e melhor
 
-        separator(61, config[7]);
+        separator(61, config[7]); // Printa caracteres de separação
         for(int i=0; i<size; i++, printf("|\n")){
             for(int j=0; j<(29-size); j++) printf(" ");
             for(int j=!printf("| "); j<size; j++) printf("%c ", field[i][j]);
         }
-        separator(61, 0);
+        separator(61, 0); // Printa caracteres de separação
 
-        if(run == 0) printf("- Digite 'I' para iniciar o jogo;\n");
-        else{
-            if(run == 1) printf("- Digite 'P' para despausar o jogo;\n");
-            if(run == 2) printf("- Digite 'P' para pausar o jogo;\n");
-            printf("- Digite 'R' para reiniciar o jogo;\n");
-        }
-        printf("- Digite 'V' para voltar ao menu principal;\n");
-        printf("- Digite 'W/A/S/D' para movimentar a cobra.\n\n");
-
-        status = !printf("%s>", print_log(status));
+        // Printa os guias de tecla e o log do menu do jogo
+        if(run==-1)     printf("|  (R) Reiniciar   |   (C) Configurar   |    (V) Voltar     |");
+        else if(run==0) printf("|   (I) Iniciar    |   (C) Configurar   |    (V) Voltar     |");
+        else if(run==1) printf("|  (P) Despausar   |   (R) Reiniciar    |    (V) Voltar     |");
+        else if(run==2) printf("| (P) Pausar | (R) Reiniciar | (W/A/S/D) Mover | (V) Voltar |");
+        status = !printf("\n\n%s>", print_log(status)); // Printa o log e reseta a variável "status"
 
         if(run == 2){
             Sleep(sleep_time);
@@ -94,7 +91,7 @@ void game(int *config, int *best_score){
                 
                 else if(input == 'P' || input == 'p') run = 1, status = 3;
                 else if(input == 'R' || input == 'r') run = 0, status = 2, score = config[3];
-                else if(input == 'V' || input == 'v') run = 3;
+                else if(input == 'V' || input == 'v') run = 3, *flag = 0;
                 else status = 1;
                 
                 if(run != 2) continue;
@@ -151,13 +148,21 @@ void game(int *config, int *best_score){
         else{
             input = _getch();
 
-            if(input == 'V' || input == 'v') run = 3;
-            else if(run == 0 && (input == 'I' || input == 'i')) run = 2, x = -1, y = 0;
-            else if(run == 1 && (input == 'P' || input == 'p')) run = 2;
-            else if(run == 1 && (input == 'R' || input == 'r')) run = 0, status = 2, score = config[3];
+            if(input == 'V' || input == 'v')
+                run = 3, *flag = 0;
+            else if(run == 0 && (input == 'I' || input == 'i'))
+                run = 2, x = -1, y = 0;
+            else if(run == 1 && (input == 'P' || input == 'p'))
+                run = 2;
+            else if(run == 1 && (input == 'R' || input == 'r')) 
+                run = 0, status = 2, score = config[3];
             else if(run == -1 && (input == 'R' || input == 'r')){
                 clean_field(field, snake_i, snake_j, config, size); // Inicializa/Limpa o campo
                 run = 2, score = config[3], x = -1, y = 0;
+            }
+            else if(run != 1 && (input == 'C' || input == 'c')){
+                options_menu(error, config); // Permite que o usuário altere configurações dentro da função game()
+                run = 3, *flag = 1; // Após alterações no menu de configs, é necessário reiniciar a função game()
             }
             else status = 1;
         }

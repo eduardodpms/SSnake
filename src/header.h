@@ -19,6 +19,6 @@ char *print_log(int n);
 
 void clean_field(char **field, int *snake_i, int *snake_j, int *config, int size);
 
-void game(int *config, int *best_score);
+void game(int *error, int *config, int *flag, int *best_score);
 
 #endif

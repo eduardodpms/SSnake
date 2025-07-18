@@ -25,7 +25,7 @@ void space(int length, int line, char msg[100]){
 // Função para escanear inputs, usando "_getch()"
 char scan(int *error){
     if(*error) // Se houve erro (input inválido)
-        *error = !printf("%s", ">>> Por favor, digite uma opção válida!\n"); // Reseta a flag e print o log de erro
+        *error = !printf(">>> Por favor, digite uma opção válida!\n"); // Reseta a flag e printa o log de erro
 
     printf(">"); // Printa um "indicador de input"
     return _getch(); // Recebe e retorna o caracter de input
@@ -69,7 +69,7 @@ void options_menu(int *error, int *config){
         if(config[7] == 0) config_8 = "ATIVAR";
         else if(config[7] == 1) config_8 = "DESATIVAR";
 
-        if(!config[7]) system("cls"); // Limpa o terminal
+        if(!config[7]) system("cls"); // Limpa o terminal (modo normal)
         else printf("\n\n\n\n\n"); // Printa espaçamento (modo de Debug)
 
         space(23, 0, "Menu de Opções"); // Cabeçalho do menu
@@ -77,22 +77,18 @@ void options_menu(int *error, int *config){
         printf("\n1) Dificuldade do Jogo  - - - - [%s]", config_1);
         if(config[7]) printf("  --  (MÉDIO, DIFÍCIL, FÁCIL)");
         printf("\n2) Contato com a Parede - - - - [%s]", config_2);
-        if(config[7]) printf("  --  (ATRAVESSA, BATE)");
         printf("\n3) Tamanho do Campo - - - - - - [%dx%d]", config[2], config[2]);
         if(config[7]) printf("  --  min:5x5, max:29x29");
         printf("\n4) Tamanho Inicial da Cobra - - [%d]", config[3]);
         if(config[7]) printf("  --  min:1, max:%d", (config[2]*config[2])-1);
         printf("\n5) Caracter da Cabeça - - - - - ['%c']", config[4]);
-        if(config[7]) printf("  --  ('O', 'o')");
         printf("\n6) Caracter do Corpo  - - - - - ['%c']", config[5]);
-        if(config[7]) printf("  --  ('C', 'c')");
         printf("\n7) Caracter da Fruta  - - - - - ['%c']", config[6]);
-        if(config[7]) printf("  --  ('*', 'X')");
         printf("\n\nD) Modo de DEBUG  - - - - - - - [%s]", config_8);
         printf("\nR) Resetar Opções\n\n");
         separator(60, 0); // Printa caracteres de separação
         printf("Selecione o número correspondente à opção que deseja\n"); // Guia de input
-        printf("alterar, ou digite 'V' para voltar ao menu principal.\n\n"); // Guia de input
+        printf("alterar, ou digite (V) para voltar ao menu principal.\n\n"); // Guia de input
 
         char input = scan(error); // Escaneia o input, com a função scan()
 
@@ -137,14 +133,14 @@ void options_menu(int *error, int *config){
 void info_menu(int *error, int debug){
     int run = 1; // Flag de execução
     while(run){
-        if(!debug) system("cls"); // Limpa o terminal
+        if(!debug) system("cls"); // Limpa o terminal (modo normal)
         else printf("\n\n\n\n\n"); // Printa espaçamento (modo de Debug)
                 
         space(21, 0, "Menu de Informações"); // Cabeçalho do menu
         separator(61, debug); // Printa caracteres de separação
         printf("      Copyright Eduardo de Pina // GitHub: @eduardodpms\n");
         separator(61, 0); // Printa caracteres de separação
-        printf("Digite 'V' para voltar ao menu principal.\n\n"); // Guia de input
+        printf("Digite (V) para voltar ao menu principal.\n\n"); // Guia de input
 
         char input = scan(error); // Escaneia o input, com a função scan()
 
@@ -156,10 +152,10 @@ void info_menu(int *error, int debug){
 
 // Função para o "menu" de saída
 int exit_menu(int debug){
-    if(!debug) system("cls"); // Limpa o terminal
+    if(!debug) system("cls"); // Limpa o terminal (modo normal)
     else printf("\n\n\n\n\n"); // Printa espaçamento (modo de Debug)
 
-    separator(61, 0); // Printa caracteres de separação
+    separator(61, debug); // Printa caracteres de separação
     space(21, 1, "Obrigado por Jogar!");
     space(19, 0, "-----------------------");
     space(27, 1, "SSnake");
