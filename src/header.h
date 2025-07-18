@@ -9,7 +9,7 @@ char scan(int *error);
 
 char main_menu(int *error, int debug);
 
-void options_menu(int *error, int *config);
+void options_menu(int *error, int *config, int *wait, char mode[3][7]);
 
 void info_menu(int *error, int debug);
 
@@ -19,6 +19,6 @@ char *print_log(int n);
 
 void clean_field(char **field, int *snake_i, int *snake_j, int *config, int size);
 
-void game(int *error, int *config, int *flag, int *best_score);
+void game(int *error, int *config, int *wait, char mode[3][7], int *flag, int *best_score);
 
 #endif

@@ -43,26 +43,22 @@ char main_menu(int *error, int debug){
     space(11, 0, "|____/|____/|_| \\_/_/   \\_\\_|\\_\\|_____|");
     space(23, 0, "by eduardodpms");
     separator(61, 0); // Printa caracteres de separação
-    printf("Selecione uma opção:\n\n");
-    printf("1) Iniciar Jogo\n2) Menu de Opções\n");
-    printf("3) Informações\n4) Sair\n\n");
+    printf("Selecione uma opção:\n\n"); // Guias de tecla
+    printf("1) Iniciar Jogo\n2) Menu de Opções\n"); // Guias de tecla
+    printf("3) Informações\n4) Sair\n\n"); // Guias de tecla
 
     return scan(error); // Escaneia e retorna o input, com a função scan()
 }
 
 
 // Função para printar e processar o menu de opções
-void options_menu(int *error, int *config){
+void options_menu(int *error, int *config, int *wait, char mode[3][7]){
     int run = 1, backup[8]; // Flag de execução e vetor de backup
-    char *config_1, *config_2, *config_8;
+    char *config_2, *config_8;
 
     for(int k=0; k<8; k++) backup[k] = config[k]; // Armazena as configs no backup
 
     while(run){
-        if(config[0] == 0) config_1 = "FÁCIL";
-        else if(config[0] == 1) config_1 = "MÉDIO";
-        else if(config[0] == 2) config_1 = "DIFÍCIL";
-
         if(config[1] == 0) config_2 = "ATRAVESSA";
         else if(config[1] == 1) config_2 = "BATE";
 
@@ -74,13 +70,13 @@ void options_menu(int *error, int *config){
 
         space(23, 0, "Menu de Opções"); // Cabeçalho do menu
         separator(60, config[7]); // Printa caracteres de separação
-        printf("\n1) Dificuldade do Jogo  - - - - [%s]", config_1);
-        if(config[7]) printf("  --  (MÉDIO, DIFÍCIL, FÁCIL)");
+        printf("\n1) Dificuldade do Jogo  - - - - [%s]", mode[config[0]]);
+        if(config[7]) printf("   --  %dms", wait[config[0]]);
         printf("\n2) Contato com a Parede - - - - [%s]", config_2);
-        printf("\n3) Tamanho do Campo - - - - - - [%dx%d]", config[2], config[2]);
+        printf("\n3) Tamanho do Campo - - - - - - [%02dx%02d]", config[2], config[2]);
         if(config[7]) printf("  --  min:5x5, max:29x29");
-        printf("\n4) Tamanho Inicial da Cobra - - [%d]", config[3]);
-        if(config[7]) printf("  --  min:1, max:%d", (config[2]*config[2])-1);
+        printf("\n4) Tamanho Inicial da Cobra - - [%03d]", config[3]);
+        if(config[7]) printf("    --  min:1, max:%d", (config[2]*config[2])-1);
         printf("\n5) Caracter da Cabeça - - - - - ['%c']", config[4]);
         printf("\n6) Caracter do Corpo  - - - - - ['%c']", config[5]);
         printf("\n7) Caracter da Fruta  - - - - - ['%c']", config[6]);

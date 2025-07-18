@@ -41,19 +41,15 @@ void clean_field(char **field, int *snake_i, int *snake_j, int *config, int size
 // Run = 2 > O jogo está rodando
 // Run = 3 > O jogo será encerrado
 
-void game(int *error, int *config, int *flag, int *best_score){
-    int run = 0, status = 2, sleep_time, free_spaces, value;
+void game(int *error, int *config,  int *wait, char mode[3][7], int *flag, int *best_score){
+    int run = 0, status = 2, free_spaces, value;
     int score = config[3], size = config[2];
-    int snake_i[size*size+2], snake_j[size*size+2], x, y;
+    int snake_i[size*size+2], snake_j[size*size+2], x = -1, y = 0;
 
     char input, **field = malloc(size * sizeof(char *)); // Aloca a variável de input e a matriz que representa o campo
     for(int k=0; k<size; k++) field[k] = malloc(size * sizeof(char)); // Aloca o espaço de cada linha do campo
 
     srand(time(NULL)); // Inicializa o gerador de números aleatórios com a semente do tempo
-
-    if(config[0] == 0) sleep_time = 800;
-    else if(config[0] == 1) sleep_time = 400;
-    else if(config[0] == 2) sleep_time = 200;
 
     while(run != 3){
         if(run == 0) clean_field(field, snake_i, snake_j, config, size); // Inicializa/Limpa o campo
@@ -65,9 +61,17 @@ void game(int *error, int *config, int *flag, int *best_score){
                (config[0]+1)*(score-config[3]), (config[0]+1)*(*best_score-config[3])); // Valor dos scores atual e melhor
 
         separator(61, config[7]); // Printa caracteres de separação
-        for(int i=0; i<size; i++, printf("|\n")){
+        for(int i=0; i<size; i++){
             for(int j=0; j<(29-size); j++) printf(" ");
             for(int j=!printf("| "); j<size; j++) printf("%c ", field[i][j]);
+
+            if(config[7] && i==0)      printf("|   Wait = %dms (%s)\n", wait[config[0]], mode[config[0]]);
+            else if(config[7] && i==1) printf("|   Movement: i = %d, j = %d\n", x, y);
+            else if(config[7] && i==2) printf("|   Free Spaces = %d\n", size*size-score-1);
+            else if(config[7] && i==3) printf("|   Snake Size = %d, Field Size = %d\n", score, size*size);
+            else if(config[7] && i==4) printf("|   Head = (%d, %d), Tail = (%d, %d)\n",
+                                              snake_i[score], snake_j[score], snake_i[1], snake_j[1]);
+            else printf("|\n");
         }
         separator(61, 0); // Printa caracteres de separação
 
@@ -79,7 +83,7 @@ void game(int *error, int *config, int *flag, int *best_score){
         status = !printf("\n\n%s>", print_log(status)); // Printa o log e reseta a variável "status"
 
         if(run == 2){
-            Sleep(sleep_time);
+            Sleep(wait[config[0]]);
 
             if(_kbhit()){
                 input = _getch();
@@ -161,7 +165,7 @@ void game(int *error, int *config, int *flag, int *best_score){
                 run = 2, score = config[3], x = -1, y = 0;
             }
             else if(run != 1 && (input == 'C' || input == 'c')){
-                options_menu(error, config); // Permite que o usuário altere configurações dentro da função game()
+                options_menu(error, config, wait, mode); // Permite que o usuário altere configurações dentro da função game()
                 run = 3, *flag = 1; // Após alterações no menu de configs, é necessário reiniciar a função game()
             }
             else status = 1;
