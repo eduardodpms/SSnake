@@ -3,29 +3,28 @@
 #include <conio.h> // Input de caracteres
 
 
-
 // Função para printar caracteres de separação
 void separator(int length, int debug){
-    for(int i=0; i<(length/2-3); i++) printf("=");
-    if(debug) printf("[DEBUG]");
-    else printf("=======");
-    for(int i=0; i<(length/2-3); i++) printf("=");
-    printf("\n");
+    for(int i=0; i<(length/2-3); i++) printf("="); // Printa a primeira parte dos separadores
+    if(debug) printf("[DEBUG]"); // Indicador do modo de Debug
+    else printf("======="); // Modo normal
+    for(int i=0; i<(length/2-3); i++) printf("="); // Printa a segunda parte dos separadores
+    printf("\n"); // Printa um retorno de linha
 }
 
 
 // Função para printar caracteres de espaço + mensagem
 void space(int length, int line, char msg[100]){
-    if(line) printf("\n");
-    for(int i=0; i<length; i++) printf(" ");
-    printf("%s\n", msg);
+    if(line) printf("\n"); // Se deseja printar um retorno de lina antes ou não
+    for(int i=0; i<length; i++) printf(" "); // Printa os espaçamento desejado
+    printf("%s\n", msg); // Printa a string desejada + retorno de linha
 }
 
 
 // Função para escanear inputs, usando "_getch()"
 char scan(int *error){
     if(*error) // Se houve erro (input inválido)
-        *error = !printf(">>> Por favor, digite uma opção válida!\n"); // Reseta a flag e printa o log de erro
+        *error = !printf(">>> Por favor, digite uma opção válida!\n"); // Printa o log de erro e reseta a flag
 
     printf(">"); // Printa um "indicador de input"
     return _getch(); // Recebe e retorna o caracter de input
@@ -34,6 +33,9 @@ char scan(int *error){
 
 // Função para printar o menu principal e registrar o input
 char main_menu(int *error, int debug){
+    if(!debug) system("cls"); // Limpa o terminal (modo normal)
+    else printf("\n\n\n\n\n"); // Printa espaçamento (modo de Debug)
+
     separator(61, debug); // Printa caracteres de separação
     space(24, 0, "Bem Vindo(a)!");
     space(11, 0, " ____  ____  _   _    _    _  __ _____");
@@ -54,72 +56,72 @@ char main_menu(int *error, int debug){
 // Função para printar e processar o menu de opções
 void options_menu(int *error, int *config, int *wait, char mode[3][7]){
     int run = 1, backup[8]; // Flag de execução e vetor de backup
-    char *config_2, *config_8;
+    char *config_2, *config_8; // Strings referentes às configurações
 
     for(int k=0; k<8; k++) backup[k] = config[k]; // Armazena as configs no backup
 
     while(run){
-        if(config[1] == 0) config_2 = "ATRAVESSA";
-        else if(config[1] == 1) config_2 = "BATE";
+        // Define a string para a opção "2" (Contato com a parede)
+        if(config[1] == 0) config_2 = "ATRAVESSA"; // String para configuração "0"
+        else if(config[1] == 1) config_2 = "BATE"; // String para configuração "1"
 
-        if(config[7] == 0) config_8 = "ATIVAR";
-        else if(config[7] == 1) config_8 = "DESATIVAR";
+        // Define a string para a opção "8" (Modo de Debug)
+        if(config[7] == 0) config_8 = "ATIVAR"; // String para configuração "0"
+        else if(config[7] == 1) config_8 = "DESATIVAR"; // String para configuração "1"
 
         if(!config[7]) system("cls"); // Limpa o terminal (modo normal)
         else printf("\n\n\n\n\n"); // Printa espaçamento (modo de Debug)
 
         space(23, 0, "Menu de Opções"); // Cabeçalho do menu
         separator(60, config[7]); // Printa caracteres de separação
-        printf("\n1) Dificuldade do Jogo  - - - - [%s]", mode[config[0]]);
-        if(config[7]) printf("   --  %dms", wait[config[0]]);
-        printf("\n2) Contato com a Parede - - - - [%s]", config_2);
-        printf("\n3) Tamanho do Campo - - - - - - [%02dx%02d]", config[2], config[2]);
-        if(config[7]) printf("  --  min:5x5, max:29x29");
-        printf("\n4) Tamanho Inicial da Cobra - - [%03d]", config[3]);
-        if(config[7]) printf("    --  min:1, max:%d", (config[2]*config[2])-1);
-        printf("\n5) Caracter da Cabeça - - - - - ['%c']", config[4]);
-        printf("\n6) Caracter do Corpo  - - - - - ['%c']", config[5]);
-        printf("\n7) Caracter da Fruta  - - - - - ['%c']", config[6]);
-        printf("\n\nD) Modo de DEBUG  - - - - - - - [%s]", config_8);
-        printf("\nR) Resetar Opções\n\n");
+        printf("\n1) Dificuldade do Jogo  - - - - [%s]", mode[config[0]]); // Opção 1: Dificuldade (MEDIUM/HARD/EASY)
+        if(config[7]) printf("   --  %dms", wait[config[0]]); // Debug: mostra o tempo de espera do modo selecionado
+        printf("\n2) Contato com a Parede - - - - [%s]", config_2); // Opção 2: Evento ao cruzar a parede (ATRAVESSA/BATE)
+        printf("\n3) Tamanho do Campo - - - - - - [%02dx%02d]", config[2], config[2]); // Opção 3: Tamanho do campo
+        if(config[7]) printf("  --  min: 5x5, max: 29x29"); // Debug: tamanhos mínimo e máximo do campo
+        printf("\n4) Tamanho Inicial da Cobra - - [%03d]", config[3]); // Opção 4: Tamanho inicial da cobra
+        if(config[7]) printf("    --  min: 1, max: %d", (config[2]*config[2])-1); // Debug: tamanhos mín e máx da cobra
+        printf("\n5) Caracter da Cabeça - - - - - ['%c']", config[4]); // Opção 5: Caracter da cabeça ('O', 'o')
+        printf("\n6) Caracter do Corpo  - - - - - ['%c']", config[5]); // Opção 6: Caracter do corpo ('C', 'c')
+        printf("\n7) Caracter da Fruta  - - - - - ['%c']", config[6]); // Opção 7: Caracter da fruta ('*', 'X')
+        printf("\n\nD) Modo de DEBUG  - - - - - - - [%s]", config_8); // Opção 8: Modo de Debug (ATIVAR/DESATIVAR)
+        printf("\nR) Resetar Opções\n\n"); // Opção 9: Resetar opções (com o vetor de backup)
         separator(60, 0); // Printa caracteres de separação
-        printf("Selecione o número correspondente à opção que deseja\n"); // Guia de input
-        printf("alterar, ou digite (V) para voltar ao menu principal.\n\n"); // Guia de input
+        space(20, 0, "|    (V) Voltar    |"); // Guia de input
 
-        char input = scan(error); // Escaneia o input, com a função scan()
+        char input = scan(error); // Escaneia o input, com a função "scan()"
 
-        if(input == '1'){
-            config[0]++;
-            if(config[0] > 2) config[0] = 0;
+        if(input == '1'){ // Opção 1: Dificuldade (EASY/MEDIUM/HARD)
+            config[0] = config[0] + 1; // Alterna entre "MEDIUM", "HARD" e "EASY"
+            if(config[0] > 2) config[0] = 0; // Volta pra "EASY"
         }
-        else if(input == '2')
-            config[1] = !config[1];
-        else if(input == '3'){
-            config[2] = config[2] + 2;
-            if(config[2] > 29) config[2] = 5;
-            if(config[3] > ((config[2]*config[2])-1)) config[3] = config[2]*config[2]-1;
+        else if(input == '2'){ // Opção 2: Evento ao cruzar a parede
+            config[1] = !config[1]; // Alterna entre "ATRAVESSA" e "BATE"
         }
-        else if(input == '4'){
-            config[3]++;
-            if(config[3] > ((config[2]*config[2])-1)) config[3] = 1;
+        else if(input == '3'){ // Opção 3: Tamanho do campo
+            config[2] = config[2] + 2; // Aumenta a configuração em 2
+            if(config[2] > 29) config[2] = 5; // Reseta para 5x5 se maior que o máximo permitido (29x29)
+            if(config[3] > ((config[2]*config[2])-1)) config[3] = config[2]*config[2]-1; // Corrige o tamanho da cobra
         }
-        else if(input == '5'){
-            if(config[4] == 'O') config[4] = 'o';
-            else if(config[4] == 'o') config[4] = 'O';
+        else if(input == '4'){ // Opção 4: Tamanho inicial da cobra
+            config[3] = config[3] + 1;  // Aumenta a configuração em 1
+            if(config[3] > ((config[2]*config[2])-1)) config[3] = 1; // Reseta para 1 se maior que o máximo permitido
         }
-        else if(input == '6'){
-            if(config[5] == 'C') config[5] = 'c';
-            else if(config[5] == 'c') config[5] = 'C';
+        else if(input == '5'){ // Opção 5: Caracter da cabeça
+            if(config[4] == 'O') config[4] = 'o'; // Alternar para 'o'
+            else if(config[4] == 'o') config[4] = 'O'; // Alternar para 'O'
         }
-        else if(input == '7'){
-            if(config[6] == '*') config[6] = 'X';
-            else if(config[6] == 'X') config[6] = '*';
+        else if(input == '6'){ // Opção 6: Caracter do corpo
+            if(config[5] == 'C') config[5] = 'c'; // Alternar para 'c'
+            else if(config[5] == 'c') config[5] = 'C'; // Alternar para 'C'
         }
-        else if(input == 'D' || input == 'd')
-            config[7] = !config[7];
-        else if(input == 'R' || input == 'r')
-            for(int k=0; k<8; k++) config[k] = backup[k]; // Recupera as informações de backup
-        else if(input == 'V' || input == 'v') run = 0; // Caso se deseje voltar ao menu anterior
+        else if(input == '7'){ // Opção 7: Caracter da fruta
+            if(config[6] == '*') config[6] = 'X'; // Alternar para 'X'
+            else if(config[6] == 'X') config[6] = '*'; // Alternar para '*'
+        }
+        else if(input == 'D' || input == 'd') config[7] = !config[7]; // Alterna o modo (normal ou Debug)
+        else if(input == 'R' || input == 'r') for(int k=0; k<8; k++) config[k] = backup[k]; // Recupera o backup
+        else if(input == 'V' || input == 'v') run = 0; // Retorna ao menu anterior
         else *error = 1; // Flag de leitura inválida
     }
 }
@@ -134,12 +136,11 @@ void info_menu(int *error, int debug){
                 
         space(21, 0, "Menu de Informações"); // Cabeçalho do menu
         separator(61, debug); // Printa caracteres de separação
-        printf("      Copyright Eduardo de Pina // GitHub: @eduardodpms\n");
+        printf("   Copyright Eduardo de Pina // GitHub: eduardodpms/SSnake\n");
         separator(61, 0); // Printa caracteres de separação
-        printf("Digite (V) para voltar ao menu principal.\n\n"); // Guia de input
+        space(20, 0, "|    (V) Voltar    |"); // Guia de input
 
         char input = scan(error); // Escaneia o input, com a função scan()
-
         if(input == 'V' || input == 'v') run = 0; // Caso se deseje voltar ao menu anterior
         else *error = 1; // Flag de leitura inválida
     }
