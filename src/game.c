@@ -1,21 +1,21 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <windows.h>
-#include <conio.h>
-#include <time.h>
-#include "header.h"
+#include <stdio.h> // Output do código
+#include <stdlib.h> // Limpar o terminal e alocar espaços de memória
+#include <windows.h> // Função de espera (Sleep())
+#include <conio.h> // Input de caracteres
+#include <time.h> // Tempo do sistema
+#include "header.h" // Arquivo de cabeçalho
 
 
 // Função para definir o log referente a cada status do jogo
 char *print_log(int n){
     if(n==0)      return "";
-    else if(n==1) return ">>> Por favor, digite uma opção válida!\n";
+    else if(n==1) return ">>> Por favor, digite uma entrada valida!\n";
     else if(n==2) return ">>> Pressione (I) para iniciar!\n";
-    else if(n==3) return ">>> O jogo está pausado!\n";
+    else if(n==3) return ">>> O jogo foi pausado!\n";
     else if(n==4) return ">>> A cobra bateu em si mesma!\n";
     else if(n==5) return ">>> A cobra bateu na parede!\n";
     else if(n==6) return ">>> A cobra aumentou de tamanho!\n";
-    else if(n==7) return ">>> Você completou o jogo! Parabéns!\n";
+    else if(n==7) return ">>> O jogo foi completado! Parabens!\n";
     else          return ">>> Houve um erro.\n";
 }
 
@@ -103,7 +103,7 @@ void game(int *error, int *config,  int *wait, char mode[3][7], int *flag, int *
                 if(_kbhit()){ // Se alguma tecla foi pressionada
                     input = _getch(); // Armazena o caracter de entrada na variável "input"
 
-                    // Entradas de movimentação: Movem a cobra e o jogo continua a execução
+                    // Entradas de movimentação: Movem a cobra e o jogo continua a execução (run == 2)
                     if(input == 'W' || input == 'w')      x = -1, y = 0; // 'W': Variáveis de posição vão para cima
                     else if(input == 'A' || input == 'a') x = 0, y = -1; // 'A': Variáveis de posição vão para a esquerda
                     else if(input == 'S' || input == 's') x = 1, y = 0; // 'S': Variáveis de posição vão para baixo
@@ -187,7 +187,7 @@ void game(int *error, int *config,  int *wait, char mode[3][7], int *flag, int *
                     run = 2, score = config[3], x = -1, y = 0; // Coloca o jogo em andamento e reseta as variáveis do jogo
                 }
                 else if(run != 1 && (input == 'C' || input == 'c')){ // Caso se deseje acessar as configurações
-                    options_menu(error, config, wait, mode); // Chama o menu de configs
+                    options_menu(error, config, wait, mode); // Chama o menu de ajustes
                     run = 3, *flag = 1; // Após as alterações, é necessário reiniciar a função "game()"
                 }
                 else status = 1; // Entrada inválida: chama um warning
