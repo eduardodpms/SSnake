@@ -128,25 +128,26 @@ void game(int *error, int *config,  int *wait, char mode[3][7], int *flag, int *
                 snake_j[score+1] = snake_j[score] + y; // Posição "j" desejada
                 
                 // Verificam se a cabeça encontrará uma parede
-                if(snake_i[score]+x < 0){ // Parede norte
+                if(snake_i[score+1] < 0){ // Parede norte
                     if(config[1] == 0) snake_i[score+1] = size-1; // O i da cabeça vai pra baixo (se puder atravessar)
                     else run = -1, status = 5; // Encerra o jogo (se a cobra não puder atravessar)
                 }
-                else if(snake_i[score]+x > (size-1)){ // Parede sul
+                else if(snake_i[score+1] > (size-1)){ // Parede sul
                     if(config[1] == 0) snake_i[score+1] = 0; // O i da cabeça vai pra cima (se puder atravessar)
                     else run = -1, status = 5; // Encerra o jogo (se a cobra não puder atravessar)
                 }
-                else if(snake_j[score]+y < 0){ // Parede oeste
+                else if(snake_j[score+1] < 0){ // Parede oeste
                     if(config[1] == 0) snake_j[score+1] = size-1; // O j da cabeça vai pra direita (se puder atravessar)
                     else run = -1, status = 5; // Encerra o jogo (se a cobra não puder atravessar)
                 }
-                else if(snake_j[score]+y > (size-1)){ // Parede leste
+                else if(snake_j[score+1] > (size-1)){ // Parede leste
                     if(config[1] == 0) snake_j[score+1] = 0; // O j da cabeça vai pra esquerda (se puder atravessar)
                     else run = -1, status = 5; // Encerra o jogo (se a cobra não puder atravessar)
                 }
 
                 // Verificam se a cabeça colidirá com algo no campo
-                if(field[snake_i[score+1]][snake_j[score+1]] == config[6]){ // Se colidiu com uma Fruta
+                if(run == -1) continue; // Pula a verificação caso a cobra tenha batido na parede
+                else if(field[snake_i[score+1]][snake_j[score+1]] == config[6]){ // Se colidiu com uma Fruta
                     score++, status = 6; // Atualiza o tamanho da cobra
                     free_spaces = size*size -score; // Calcula a quantidade de espaços livres no campo
                     
