@@ -134,8 +134,24 @@ void info_menu(int *error, int debug){
         if(!debug) system("cls"); // Limpa o terminal (modo normal)
         else printf("\n\n\n\n\n"); // Printa espaçamento (modo de Debug)
                 
-        space(21, 0, "Menu de Infos"); // Cabeçalho do menu
+        space(24, 0, "Menu de Infos"); // Cabeçalho do menu
         separator(61, debug); // Printa caracteres de separação
+        printf("   O SSnake e um projeto pessoal meu, o qual iniciei com o\n");
+        printf("   objetivo de testar as minhas habilidades com a linguagem\n");
+        printf("   C apos um contato inicial com programacao na disciplina\n");
+        printf("   de Algoritmos, na Universidade de Brasilia (UnB/FCTE).\n\n");
+        printf("   Trata-se de uma replica do classico 'Jogo da Cobrinha',\n");
+        printf("   feita em C para ser executada inteiramente em terminais\n");
+        printf("   do sistema Windows. E um projeto completo, dotado de uma\n");
+        printf("   serie de funcionalidades, tais como as seguintes:\n\n");
+        printf("   - Navegacao completa entre menus;\n");
+        printf("   - Menu de ajustes, para personalizacao;\n");
+        printf("   - Contagem de score e diferentes dificuldades;\n");
+        printf("   - Modo de Debug, para controle dos eventos;\n");
+        printf("   - Sistema para pausar e reiniciar o jogo.\n\n");
+        printf("     Obrigado por jogar! Sinta-se a vontade para enviar\n");
+        printf("     sugestoes, reclamacoes ou comentarios pelo GitHub.\n");
+        printf("  ---------------------------------------------------------  \n");
         printf("   Copyright Eduardo de Pina // GitHub: eduardodpms/SSnake\n");
         separator(61, 0); // Printa caracteres de separação
         space(20, 0, "|    (V) Voltar    |"); // Guia de input
