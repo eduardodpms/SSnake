@@ -155,7 +155,7 @@ void info_menu(int *error, int debug){
         printf("     Obrigado por jogar! Sinta-se a vontade para enviar\n");
         printf("     sugestoes, reclamacoes ou comentarios pelo GitHub.\n");
         printf("  ---------------------------------------------------------  \n");
-        printf("   Copyright Eduardo de Pina // GitHub: eduardodpms/SSnake\n");
+        printf("         SSnake v1.2  //  GitHub: eduardodpms/SSnake       \n");
         separator(61, 0); // Printa caracteres de separação
         space(20, 0, "|    (V) Voltar    |"); // Guia de input
 
