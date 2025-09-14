@@ -60,8 +60,8 @@ void game(int *error, int *config,  int *wait, char mode[3][7], int *flag, int *
         // Nesse escopo, está organizado o processo de printar as informações do menu de jogo
         {
             // Limpa o terminal e printa o header do novo menu
-            if(!config[7]) system("cls"); // Limpa o terminal (modo normal)
-            else printf("\n\n\n\n\n"); // Printa espaçamento (modo de Debug)
+            if(config[7]<2) system("cls"); // Limpa o terminal (modo Normal ou Debug)
+            else printf("\n\n\n\n\n"); // Printa espaçamento (modo de Debug Avançado)
             printf("|   SSnake  by  eduardodpms   |   Score = %03d ~ Best = %03d  |\n", // Header do menu do jogo
                    (config[0]+1)*(score-config[3]), (config[0]+1)*(*best_score-config[3])); // Scores atual e melhor
 
@@ -72,7 +72,7 @@ void game(int *error, int *config,  int *wait, char mode[3][7], int *flag, int *
                 for(int j=!printf("| "); j<size; j++) // Loop de colunas
                     printf("%c ", field[i][j]); // Printa o elemento (i, j) da matriz do campo
 
-                // Printa as informações de Debug no modo de Debug
+                // Printa as informações de debug no modo de Debug ou Debug Avançado
                 if(config[7] && i==0)      printf("|   Wait = %dms (%s)\n", wait[config[0]], mode[config[0]]); // Tempo de espera
                 else if(config[7] && i==1) printf("|   Movement: i = %d, j = %d\n", x, y); // Próximas coordenadas da cabeça
                 else if(config[7] && i==2) printf("|   Free Spaces = %d\n", size*size-score-1); // Número de espaços livres

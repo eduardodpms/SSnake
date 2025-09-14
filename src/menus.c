@@ -6,7 +6,7 @@
 // Função para printar caracteres de separação
 void separator(int length, int debug){
     for(int i=0; i<(length/2-3); i++) printf("="); // Printa a primeira parte dos separadores
-    if(debug) printf("[DEBUG]"); // Indicador do modo de Debug
+    if(debug) printf("[DEBUG]"); // Indicador do modo de Debug ou Debug Avançado
     else printf("======="); // Modo normal
     for(int i=0; i<(length/2-3); i++) printf("="); // Printa a segunda parte dos separadores
     printf("\n"); // Printa um retorno de linha
@@ -33,8 +33,8 @@ char scan(int *error){
 
 // Função para printar o menu principal e registrar o input
 char main_menu(int *error, int debug){
-    if(!debug) system("cls"); // Limpa o terminal (modo normal)
-    else printf("\n\n\n\n\n"); // Printa espaçamento (modo de Debug)
+    if(debug<2) system("cls"); // Limpa o terminal (modo Normal ou Debug)
+            else printf("\n\n\n\n\n"); // Printa espaçamento (modo de Debug Avançado)
 
     separator(61, debug); // Printa caracteres de separação
     space(24, 0, "Bem Vindo(a)!");
@@ -56,8 +56,8 @@ char main_menu(int *error, int debug){
 // Função para printar e processar o menu de ajustes
 void options_menu(int *error, int *config, int *wait, char mode[3][7]){
     int run = 1, backup[8]; // Flag de execução e vetor de backup
-    char config_1[2][10] = {"ATRAVESSA", "BATE"}; // Strings para exibição da opção "1"
-    char config_7[2][10] = {"ATIVAR", "DESATIVAR"}; // Strings para exibição da opção "7"
+    char config_1[2][15] = {"ATRAVESSA", "BATE"}; // Strings para exibição da opção "1"
+    char config_7[3][15] = {"DESATIVADO", "DEBUG", "DEBUG AVANCADO"}; // Strings para exibição da opção "7"
 
     for(int k=0; k<8; k++) backup[k] = config[k]; // Armazena os ajustes no vetor de backup
 
@@ -65,8 +65,8 @@ void options_menu(int *error, int *config, int *wait, char mode[3][7]){
     while(run){
         // Esse escopo define o processo de printar as informações do menu de ajustes
         {
-            if(!config[7]) system("cls"); // Limpa o terminal (modo normal)
-            else printf("\n\n\n\n\n"); // Printa espaçamento (modo de Debug)
+            if(config[7]<2) system("cls"); // Limpa o terminal (modo Normal ou Debug)
+            else printf("\n\n\n\n\n"); // Printa espaçamento (modo de Debug Avançado)
 
             space(23, 0, "Menu de Ajustes"); // Cabeçalho do menu
             separator(60, config[7]); // Printa caracteres de separação
@@ -80,7 +80,7 @@ void options_menu(int *error, int *config, int *wait, char mode[3][7]){
             printf("\n5) Caracter da Cabeca - - - - - ['%c']", config[4]); // 5: Caracter da cabeça ('O', 'o')
             printf("\n6) Caracter do Corpo  - - - - - ['%c']", config[5]); // 6: Caracter do corpo ('C', 'c')
             printf("\n7) Caracter da Fruta  - - - - - ['%c']", config[6]); // 7: Caracter da fruta ('*', 'X')
-            printf("\n\nD) Modo de DEBUG  - - - - - - - [%s]", config_7[config[7]]); // 8: Modo de Debug (ATIVAR/DESATIVAR)
+            printf("\n\nD) Modo de DEBUG  - - - - - - - [%s]", config_7[config[7]]); // 8: Debug (DESATIVADO/DEBUG/DEBUG AVANÇADO)
             printf("\nR) Resetar Ajustes\n\n"); // 9: Resetar ajustes (com o vetor de backup)
             separator(60, 0); // Printa caracteres de separação
             space(20, 0, "|    (V) Voltar    |"); // Guia de input
@@ -118,7 +118,10 @@ void options_menu(int *error, int *config, int *wait, char mode[3][7]){
                 if(config[6] == '*') config[6] = 'X'; // Alternar para 'X'
                 else if(config[6] == 'X') config[6] = '*'; // Alternar para '*'
             }
-            else if(input == 'D' || input == 'd') config[7] = !config[7]; // Alterna o modo (normal ou Debug)
+            else if(input == 'D' || input == 'd'){ // Opção 1: Dificuldade do jogo
+                config[7] = config[7] + 1;  // Alterna o modo (Normal, Debug ou Debug Avançado)
+                if(config[7] > 2) config[7] = 0; // Volta pra "Normal"
+            }
             else if(input == 'R' || input == 'r') for(int k=0; k<8; k++) config[k] = backup[k]; // Recupera o backup
             else if(input == 'V' || input == 'v') run = 0; // Retorna ao menu anterior
             else *error = 1; // Flag de leitura inválida
@@ -131,8 +134,8 @@ void options_menu(int *error, int *config, int *wait, char mode[3][7]){
 void info_menu(int *error, int debug){
     int run = 1; // Flag de execução
     while(run){
-        if(!debug) system("cls"); // Limpa o terminal (modo normal)
-        else printf("\n\n\n\n\n"); // Printa espaçamento (modo de Debug)
+        if(debug<2) system("cls"); // Limpa o terminal (modo Normal ou Debug)
+        else printf("\n\n\n\n\n"); // Printa espaçamento (modo de Debug Avançado)
                 
         space(24, 0, "Menu de Infos"); // Cabeçalho do menu
         separator(61, debug); // Printa caracteres de separação
@@ -165,8 +168,8 @@ void info_menu(int *error, int debug){
 
 // Função para o "menu" de saída
 int exit_menu(int debug){
-    if(!debug) system("cls"); // Limpa o terminal (modo normal)
-    else printf("\n\n\n\n\n"); // Printa espaçamento (modo de Debug)
+    if(debug<2) system("cls"); // Limpa o terminal (modo Normal ou Debug)
+    else printf("\n\n\n\n\n"); // Printa espaçamento (modo de Debug Avançado)
 
     separator(61, debug); // Printa caracteres de separação
     space(21, 1, "Obrigado por Jogar!");
